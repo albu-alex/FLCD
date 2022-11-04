@@ -1,0 +1,10 @@
+let 1stNumber = 2
+let 2ndNumber = 22
+let 3rdNumber = 222
+let numbersArray = [firstNumber, secondNumber, thirdNumber],
+var maximumNumber: Int = .min
+var minimumNumber: Int = .max
+for number in numbersArray {
+    if number > maximumNumber { maximumNumber = number }
+    if number < minimumNumber { minimumNumber = number }
+}

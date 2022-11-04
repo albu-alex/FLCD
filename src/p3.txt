@@ -1,0 +1,7 @@
+let firstNumber = 2
+let secondNumber = 22
+let thirdNumber = 222
+let fourthNumber = 2222
+var sumOfNumbers = firstNumber + secondNumber + thirdNumber + fourthNumber
+let average = sumOfNumbers / 4
+print("My average is $average")

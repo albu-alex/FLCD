@@ -1,0 +1,5 @@
+let string = "gdsavhAdfvshjaDSVADGSAdamdsa"
+var firstUppercaseLetter: Character
+for char in string.reversed() {
+    if char.isUppercase { firstUppercaseLetter = char }
+}
