@@ -5,19 +5,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class Scanner {
+public class ProgramScanner {
     private final ArrayList<String> OPERATORS = new ArrayList<>(
             List.of("+", "-", "*", "/", "<=", ">=", "==", "<", ">", "%", "=", "cin>>", "cout<<"));
     private final ArrayList<String> SEPARATORS = new ArrayList<>(
-            List.of("{", "}", ":", ";", " ", ",", "[", "]", "(", ")", "\"", "\n"));
+            List.of("{", "}", ":", ";", " ", "'", ",", "[", "]", "(", ")", "\"", "\n"));
     private final ArrayList<String> RESERVED_WORDS = new ArrayList<>(
-            List.of("int", "char", "void", "struct", "while", "if", "else", "main", "let", "var"));
+            List.of("int", "char", "void", "struct", "while", "if", "else", "main"));
 
     private final String filePath;
     private PIF pif;
     private SymbolTable symbolTable;
 
-    public Scanner(String filePath) {
+    public ProgramScanner(String filePath) {
         this.filePath = filePath;
         this.symbolTable = new SymbolTable(100);
         this.pif = new PIF();
@@ -25,7 +25,7 @@ public class Scanner {
 
     private String readFile() throws FileNotFoundException {
         StringBuilder fileContent = new StringBuilder();
-        java.util.Scanner scanner = new java.util.Scanner(new File(this.filePath));
+        Scanner scanner = new Scanner(new File(this.filePath));
         while (scanner.hasNextLine()) {
             fileContent.append(scanner.nextLine()).append("\n");
         }
@@ -40,8 +40,8 @@ public class Scanner {
 
         for (String token : tokensIncludingSeparators) {
             if (token.equals("\"")) {
-                if (inString) {
-                    // end of string
+                currentString.append(token);
+                if (inString) { // end of string
                     tokensWithCompleteStrings.add(new Pair<>(currentString.toString(), lineNumber));
                     currentString = new StringBuilder();
                 }
@@ -86,28 +86,21 @@ public class Scanner {
         }
         tokens.forEach(tokenLinePair -> {
             String token = tokenLinePair.getFirst();
-            Boolean isConstant = Pattern.compile("[a-zA-Z \\-.,!@#$%^&*()]*").matcher(token).matches() ||
-                    Pattern.compile("^[0-9]*$").matcher(token).matches();
             if (this.RESERVED_WORDS.contains(token)) {
                 this.pif.add(new Pair<>(token, new Pair<>(-1, -1)), 2);
-            }
-            else if (this.OPERATORS.contains(token)) {
+            } else if (this.OPERATORS.contains(token)) {
                 this.pif.add(new Pair<>(token, new Pair<>(-1, -1)), 3);
-            }
-            else if (this.SEPARATORS.contains(token)) {
+            } else if (this.SEPARATORS.contains(token)) {
                 this.pif.add(new Pair<>(token, new Pair<>(-1, -1)), 4);
-            }
-            else if (Pattern.compile("^[a-zA-Z]+$").matcher(token).matches()) {
+            } else if (new FiniteAutomata("src/identifier.txt").acceptsSequence(token)) {
                 // Identifier
                 this.symbolTable.add(token);
                 this.pif.add(new Pair<>(token, this.symbolTable.findPositionOfTerm(token)), 0);
-            }
-            else if (isConstant) {
+            } else if (Pattern.compile("\"[a-zA-Z0-9 ]*\"|'[a-zA-Z0-9 ]'").matcher(token).matches() || new FiniteAutomata("src/integerConstants.txt").acceptsSequence(token)) {
                 // Constant
                 this.symbolTable.add(token);
                 this.pif.add(new Pair<>(token, this.symbolTable.findPositionOfTerm(token)), 1);
-            }
-            else {
+            } else {
                 System.out.println("Lexical error, line " + tokenLinePair.getSecond());
                 foundLexicalError.set(true);
             }
@@ -117,12 +110,10 @@ public class Scanner {
             System.out.println("Lexically correct");
         }
     }
-
-    public PIF getPif() {
-        return this.pif;
-    }
-
     public SymbolTable getSymbolTable() {
-        return this.symbolTable;
+        return symbolTable;
+    }
+    public PIF getPif() {
+        return pif;
     }
 }

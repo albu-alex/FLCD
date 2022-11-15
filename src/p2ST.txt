@@ -1,9 +1,2 @@
-9 - [Character]
-12 - [firstUppercaseLetter]
-15 - [in]
-16 - [char.isUppercase]
-27 - [for]
-51 - [gdsavhAdfvshjaDSVADGSAdamdsa]
-63 - [string]
-73 - [string.reversed]
+19 - ["gdsavhAdfvshjaDSVADGSAdamdsa"]
 

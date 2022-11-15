@@ -12,16 +12,18 @@ public class Main {
     }
 
     private static void run(String filePath) {
-        Scanner scanner = new Scanner(filePath);
+        ProgramScanner scanner = new ProgramScanner(filePath);
         scanner.scan();
         printToFile(filePath.replace(".txt", "ST.txt"), scanner.getSymbolTable());
         printToFile(filePath.replace(".txt", "PIF.txt"), scanner.getPif());
     }
 
     public static void main(String[] args) {
-        run("src/p1.txt");
-        run("src/p2.txt");
-        run("src/p3.txt");
-        run("src/p1err.txt");
+        FiniteAutomata FA1 = new FiniteAutomata("src/finiteAutomata.txt");
+        System.out.println(FA1.getStates());
+        System.out.println(FA1.getAlphabet());
+        System.out.println(FA1.getTransitions());
+        System.out.println(FA1.getFinalStates());
+        System.out.println(FA1.acceptsSequence("aaaaadcb"));
     }
 }
