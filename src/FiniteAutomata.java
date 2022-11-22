@@ -34,7 +34,7 @@ public class FiniteAutomata {
             for (String transition : transitionStrings) {
                 String[] splitTransition = transition.split(this.TRANSITION_SEPARATOR);
                 this.transitions.putIfAbsent(splitTransition[0], new HashSet<>());
-                this.transitions.get(splitTransition[0]).add(new Pair<>(splitTransition[2], splitTransition[1]));
+                this.transitions.get(splitTransition[0]).add(new Pair<>(splitTransition[4], splitTransition[2]));
             }
 
             this.finalStates = new ArrayList<>(List.of(scanner.nextLine().split(this.ELEMENT_SEPARATOR)));
@@ -66,10 +66,6 @@ public class FiniteAutomata {
     }
 
     public boolean acceptsSequence(String sequence) {
-        if (! this.isDeterministic) {
-            return false;
-        }
-
         String currentState = this.initialState;
         for (int i = 0; i < sequence.length(); i++) {
             String currentSymbol = sequence.substring(i, i + 1);
@@ -92,6 +88,6 @@ public class FiniteAutomata {
             }
         }
 
-        return this.finalStates.contains(currentState);
+        return finalStates.contains(currentState);
     }
 }
