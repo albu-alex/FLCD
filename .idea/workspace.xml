@@ -4,11 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="62b355b6-91ba-4d93-beed-3223316b5b21" name="Changes" comment="Lab 4 ready to go">
+    <list default="true" id="62b355b6-91ba-4d93-beed-3223316b5b21" name="Changes" comment="Fixed tokenization issue">
+      <change afterPath="$PROJECT_DIR$/src/Grammar.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FiniteAutomata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FiniteAutomata.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/finiteAutomata.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/finiteAutomata.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/finiteAutomata.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/finiteAutomata.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/identifier.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/identifier.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/integerConstants.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/integerConstants.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/p1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/p1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/p1PIF.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/p1PIF.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/p1ST.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/p1ST.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/p1err.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/p1err.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/p1errPIF.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/p1errPIF.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/p1errST.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/p1errST.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/p2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/p2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/p2PIF.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/p2PIF.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/p2ST.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/p2ST.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/p3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/p3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/p3PIF.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/p3PIF.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/p3ST.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/p3ST.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +62,11 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/utils" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -78,7 +98,8 @@
       <workItem from="1668515056628" duration="824000" />
       <workItem from="1668528563925" duration="3580000" />
       <workItem from="1668971802649" duration="1556000" />
-      <workItem from="1669126294642" duration="2315000" />
+      <workItem from="1669126294642" duration="2684000" />
+      <workItem from="1670271693432" duration="733000" />
     </task>
     <task id="LOCAL-00001" summary="Change language from Swift to Java">
       <created>1667583943146</created>
@@ -94,7 +115,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668515752765</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Fixed tokenization issue">
+      <created>1669129482092</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1669129482092</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -114,17 +142,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Change language from Swift to Java" />
     <MESSAGE value="Lab 4 ready to go" />
-    <option name="LAST_COMMIT_MESSAGE" value="Lab 4 ready to go" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/FiniteAutomata.java</url>
-          <line>35</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Fixed tokenization issue" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed tokenization issue" />
   </component>
 </project>
