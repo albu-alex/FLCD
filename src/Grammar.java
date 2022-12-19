@@ -6,6 +6,7 @@ public class Grammar {
     private final String ELEMENT_SEPARATOR = " ";
     private final String TRANSITION_SEPARATOR = "|";
 
+
     // LL1
     private List<String> nonterminals;
     private List<String> terminals;
