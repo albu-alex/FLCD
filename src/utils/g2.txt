@@ -1,0 +1,22 @@
+program "var" decllist "&nbsp" cmpdstmt "let" declaration IDENTIFIER ":" type typeA "BOOL" "CHAR" "INTEGER" "DOUBLE" "STRING" "ARRAY" "[" nr "]" arraydecl stmtlist stmt ";" simplstmt structstmt assignstmt iostmt "=" expression "+" term "*" factor "(" ")" "readLine" "print" ifstmt whilestmt "IF" condition "{" "}" "WHILE" ".forEach" RELATION "<" "<=" "==" "!=" ">=" ">" "&&" "||" "!"
+program
+program ::= "var" decllist "&nbsp" cmpdstmt "&nbsp" | "let" decllist "&nbsp" cmpdstmt "&nbsp"
+decllist ::= declaration | declaration "&nbsp" decllist
+declaration ::= IDENTIFIER ":" type
+typeA ::= "BOOL" | "CHAR" | "INTEGER" | "DOUBLE" | "STRING"
+arraydecl ::= "ARRAY" "[" nr "]" ":" typeA
+type ::= typeA | arraydecl
+stmtlist ::= stmt | stmt ";" stmtlist
+stmt ::= simplstmt | structstmt
+simplstmt ::= assignstmt | iostmt
+assignstmt ::= IDENTIFIER "=" expression
+expression ::= expression "+" term | term
+term ::= term "*" factor | factor
+factor ::= "(" expression ")" | IDENTIFIER
+iostmt ::= "readLine" | "print" "(" IDENTIFIER ")"
+structstmt ::= cmpdstmt | ifstmt | whilestmt
+ifstmt ::= "IF" condition "{" stmt "}" "ELSE" "{" stmt "}"
+whilestmt ::= "WHILE" condition "{" stmt "}"
+forEachstmt ::= IDENTIFIER ".forEach" "{" stmt "}"
+condition ::= expression RELATION expression
+RELATION ::= "<" | "<=" | "==" | "!=" | ">=" | ">" | "&&" | "||" | "!"
