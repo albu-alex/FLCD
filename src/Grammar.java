@@ -155,7 +155,15 @@ public class Grammar {
         return stringBuilder.toString();
     }
 
-    public Set<List<String>> getProductionsForNonTerminal(String nonTerminal) {
-         return null;
+    public  Set<List<String>>  getProductionsForNonTerminal(String nonTerminal) {
+        //Set<List<String>> productions = new HashSet<>(); // nu inteleg exact cum e P-ul nostru
+        for (Set<String> left : P.keySet()) {
+            if (left.contains(nonTerminal)) {
+                 Set<List<String>> right = P.get(left);
+                return right;
+
+                }
+            }
+        return null;
     }
 }

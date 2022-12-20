@@ -81,12 +81,29 @@ public class RecursiveDescendentParser {
             Pair<String, Integer> newPair = new Pair<>(last.getFirst(),last.getSecond()+1);
             workingStack.push(newPair);
 
-            //change production top input; /// TODO THIS should be a list<list<string>> or Set<list<string>> ? i guess
-            Integer lenght = grammar.getProductionsForNonTerminal(last.getFirst()).size();//.get(last.getSecond());
+            /// TODO THIS should be a list<list<string>> or Set<list<string>>
+            //TODO sau posibil sa fie bien si asa List<String> ? i guess
+            //change production top input;
+            ///TODO nu cred ca i bn cum facui
+            Integer lenght = grammar.getProductionsForNonTerminal(last.getFirst()).size();// .get(last.getSecond()).size();
+
+
+            //delete last production from input
+            deleteLastProductionFromStack(lenght);
+
+            //put new production in input 
+            List<String> newProduction = grammar.getProductionsForNonTerminal(last.getFirst())[last.getSecond()];
 
         }
 
     }
+    private void deleteLastProductionFromStack(Integer lenght){
+        while(lenght > 0){
+            inputStack.pop();
+            lenght -= 1;
+        }
+    }
+
     private void initWritingFile(String fileName){
         try {
             this.myWriter = new FileWriter(fileName,true);
