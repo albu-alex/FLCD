@@ -13,6 +13,8 @@ public class Grammar {
         readFile(file);
     }
 
+    public String getStartSymbol () {return S;}
+
     private void readFile(String file) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(file));
 
@@ -151,5 +153,17 @@ public class Grammar {
             }
         }
         return stringBuilder.toString();
+    }
+
+    public  Set<List<String>>  getProductionsForNonTerminal(String nonTerminal) {
+        //Set<List<String>> productions = new HashSet<>(); // nu inteleg exact cum e P-ul nostru
+        for (Set<String> left : P.keySet()) {
+            if (left.contains(nonTerminal)) {
+                 Set<List<String>> right = P.get(left);
+                return right;
+
+                }
+            }
+        return null;
     }
 }
