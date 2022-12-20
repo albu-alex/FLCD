@@ -13,6 +13,8 @@ public class Grammar {
         readFile(file);
     }
 
+    public String getStartSymbol () {return S;}
+
     private void readFile(String file) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(file));
 
@@ -151,5 +153,9 @@ public class Grammar {
             }
         }
         return stringBuilder.toString();
+    }
+
+    public Set<List<String>> getProductionsForNonTerminal(String nonTerminal) {
+         return null;
     }
 }
