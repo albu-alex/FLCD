@@ -91,7 +91,7 @@ public class RecursiveDescendentParser {
             //delete last production from input
             deleteLastProductionFromStack(lenght);
 
-            //put new production in input 
+            //put new production in input
             List<String> newProduction = grammar.getProductionsForNonTerminal(last.getFirst())[last.getSecond()];
 
         }

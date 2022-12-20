@@ -1,169 +1,120 @@
+
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+@Data
+@AllArgsConstructor
 public class Grammar {
-    private Set<String> N = new HashSet<>();    // non-terminals
-    private Set<String> E = new HashSet<>();    // terminals (operators, separators, reserved words, identifiers, constants)
-    private HashMap<Set<String>, Set<List<String>>> P = new HashMap<>();    // productions (rules)
-    private String S = "";   // start symbol
 
-    public Grammar(String file) throws IOException {
-        readFile(file);
-    }
+    // N
+    private final Set<String> nonterminals;
 
-    public String getStartSymbol () {return S;}
+    // Σ
+    private final Set<String> terminals;
 
-    private void readFile(String file) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(file));
+    // P
+    private final List<Production> productions;
 
-        String nonTerminalsLine = reader.readLine();
-        N = new HashSet<>(Arrays.asList(nonTerminalsLine.strip().split(" ")));
+    // S
+    private final String startingSymbol;
 
-        String terminalsLine = reader.readLine();
-        E = new HashSet<>(Arrays.asList(terminalsLine.strip().split(" ")));
-
-        S = reader.readLine().strip();
-
-        // all the remaining lines are productions
-        String production = reader.readLine();
-        while (production != null) {
-            String[] tokens = production.split("::=");
-            String[] leftTokens = tokens[0].split(",");
-            String[] rightTokens = tokens[1].split("\\|");
-
-            Set<String> left = new HashSet<>();
-            for (String token : leftTokens) {
-                left.add(token.strip());
-            }
-            if (!P.containsKey(left)) {
-                P.put(left, new HashSet<>());
-            }
-
-            for (String token : rightTokens) {
-                ArrayList<String> productionRightElements = new ArrayList<>();
-                String[] rightTokenElements = token.strip().split(" ");
-                for (String r : rightTokenElements) {
-                    productionRightElements.add(r.strip());
+    public static Grammar readFromFile(final String filename) {
+        try (final BufferedReader bufferedReader = new BufferedReader(new FileReader(filename))) {
+            final Set<String> nonterminals = Set.of(bufferedReader.readLine().strip().split(" "));
+            final Set<String> terminals = Set.of(bufferedReader.readLine().strip().split(" "));
+            final String startingSymbol = bufferedReader.readLine().strip();
+            final List<Production> productions = new ArrayList<>();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                line = line.strip();
+                if (line.isEmpty()) continue;
+                final String[] tokens = line.split("::=");
+                final String[] leftSide = tokens[0].split(",");
+                if (leftSide.length != 1) {
+                    throw new RuntimeException("The given grammar is not context-free!");
                 }
-                P.get(left).add(productionRightElements);
-            }
-
-            production = reader.readLine();
-        }
-    }
-
-    public boolean checkContextFreeGrammar() {
-        boolean checkStartingSymbol = false;
-        for (Set<String> left : P.keySet()) {
-            if (left.contains(S)) {
-                checkStartingSymbol = true;
-                break;
-            }
-        }
-
-        if (!checkStartingSymbol) {
-            return false;
-        }
-
-        for (Set<String> left : P.keySet()) {
-            if (left.size() < 1) {
-                return false;
-            } else if (!N.contains(left.iterator().next())) {
-                return false;
-            }
-
-            Set<List<String>> right = P.get(left);
-            for(List<String> tokens : right) {
-                for (String token : tokens) {
-                    if (!(N.contains(token) || E.contains(token) || token.equals("epsilon"))) {
-                        return false;
-                    }
+                final String[] rightSide = tokens[1].split(" ");
+                final List<List<String>> productionRules = new ArrayList<>();
+                for (final String rule : rightSide) {
+                    productionRules.add(List.of(rule.strip()));
+                }
+                final Optional<Production> productionOptional = productions.stream().filter(production -> production.getStartingNonterminal().equals(leftSide[0])).findAny();
+                if (productionOptional.isPresent()) {
+                    final Production production = productionOptional.get();
+                    production
+                            .getRules()
+                            .addAll(
+                                    productionRules
+                                            .stream()
+                                            .filter(rule -> !productionOptional.get().getRules().contains(rule))
+                                            .collect(Collectors.toList())
+                            );
+                } else {
+                    productions.add(new Production(leftSide[0], productionRules));
                 }
             }
+            final Grammar grammar = new Grammar(nonterminals, terminals, productions, startingSymbol);
+            grammar.validate();
+            return grammar;
+        } catch (final IOException e) {
+            e.printStackTrace();
         }
-
-        return true;
+        throw new RuntimeException("Could not read grammar from file!");
     }
 
-    public String printNonTerminals() {
-        StringBuilder stringBuilder = new StringBuilder("N = { ");
-        for (String nonTerminal : N) {
-            stringBuilder.append(nonTerminal).append(" ");
-        }
-        stringBuilder.append("}");
-        return stringBuilder.toString();
+    public boolean isTerminal(final String symbol) {
+        return terminals.contains(symbol);
     }
 
-    public String printTerminals() {
-        StringBuilder stringBuilder = new StringBuilder("E = { ");
-        for (String terminal : E) {
-            stringBuilder.append(terminal).append(" ");
-        }
-        stringBuilder.append("}");
-        return stringBuilder.toString();
+    public boolean isNonterminal(final String symbol) {
+        return nonterminals.contains(symbol);
     }
 
-    public String printProductions() {
-        StringBuilder stringBuilder = new StringBuilder("P = {\n");
-        P.forEach((left, right) -> {
-            stringBuilder.append("\t");
-            int comma = 0;
-            for (String token : left) {
-                stringBuilder.append(token);
-                comma += 1;
-                if (comma < left.size()) {
-                    stringBuilder.append(", ");
-                }
+    public Production getProductionsForNonterminal(final String nonterminal) {
+        if (!nonterminals.contains(nonterminal)) {
+            throw new RuntimeException(String.format("Given nonterminal: %s is not one of the nonterminals of the grammar.", nonterminal));
+        }
+        return productions
+                .stream()
+                .filter(production -> production.getStartingNonterminal().equals(nonterminal))
+                .findAny()
+                .orElse(null);
+    }
+
+    private void validate() {
+        if (!nonterminals.contains(startingSymbol)) {
+            throw new RuntimeException("Starting symbol is not one of the nonterminals.");
+        }
+        productions.forEach(production -> {
+            if (!nonterminals.contains(production.getStartingNonterminal())) {
+                throw new RuntimeException(String.format("Starting nonterminal %s from production %s is not one of the nonterminals.", production.getStartingNonterminal(), production));
             }
-            stringBuilder.append(" -> ");
-            comma = 0;
-            for (List<String> tokens : right) {
-                for (String token : tokens) {
-                    stringBuilder.append(token).append(" ");
+            production.getRules().forEach(rule -> rule.forEach(symbol -> {
+                if (!(terminals.contains(symbol) || nonterminals.contains(symbol))) {
+                    throw new RuntimeException(String.format("Symbol %s from production %s is neither terminal, nor nonterminal.", symbol, production));
                 }
-                comma += 1;
-                if (comma < right.size()) {
-                    stringBuilder.append("| ");
-                }
-            }
-            stringBuilder.append("\n");
+            }));
         });
-        stringBuilder.append("}");
-        return stringBuilder.toString();
     }
 
-    public String printProductionsForNonTerminal(String nonTerminal) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Set<String> left : P.keySet()) {
-            if (left.contains(nonTerminal)) {
-                stringBuilder.append(nonTerminal).append(" -> ");
-                Set<List<String>> right = P.get(left);
-                int comma = 0;
-                for (List<String> tokens : right) {
-                    for (String token : tokens) {
-                        stringBuilder.append(token).append(" ");
-                    }
-                    comma += 1;
-                    if (comma < right.size()) {
-                        stringBuilder.append("| ");
-                    }
-                }
-            }
-        }
-        return stringBuilder.toString();
+    @Data
+    @AllArgsConstructor
+    public static class Production {
+
+        private final String startingNonterminal;
+
+        private final List<List<String>> rules;
+
     }
 
-    public  Set<List<String>>  getProductionsForNonTerminal(String nonTerminal) {
-        //Set<List<String>> productions = new HashSet<>(); // nu inteleg exact cum e P-ul nostru
-        for (Set<String> left : P.keySet()) {
-            if (left.contains(nonTerminal)) {
-                 Set<List<String>> right = P.get(left);
-                return right;
-
-                }
-            }
-        return null;
-    }
 }
