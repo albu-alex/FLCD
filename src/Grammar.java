@@ -117,7 +117,7 @@ public class Grammar {
                     stringBuilder.append(", ");
                 }
             }
-            stringBuilder.append(" -> ");
+            stringBuilder.append(" ::= ");
             comma = 0;
             for (List<String> tokens : right) {
                 for (String token : tokens) {
@@ -138,7 +138,7 @@ public class Grammar {
         StringBuilder stringBuilder = new StringBuilder();
         for (Set<String> left : P.keySet()) {
             if (left.contains(nonTerminal)) {
-                stringBuilder.append(nonTerminal).append(" -> ");
+                stringBuilder.append(nonTerminal).append("::=");
                 Set<List<String>> right = P.get(left);
                 int comma = 0;
                 for (List<String> tokens : right) {
@@ -155,7 +155,7 @@ public class Grammar {
         return stringBuilder.toString();
     }
 
-    public  Set<List<String>>  getProductionsForNonTerminal(String nonTerminal) {
+    public Set<List<String>> getProductionsForNonTerminal(String nonTerminal) {
         //Set<List<String>> productions = new HashSet<>(); // nu inteleg exact cum e P-ul nostru
         for (Set<String> left : P.keySet()) {
             if (left.contains(nonTerminal)) {

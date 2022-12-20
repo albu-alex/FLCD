@@ -3,13 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-
-enum State {
-    NORMAL,
-    BACK,
-    FINAL,
-    ERROR
-}
 public class RecursiveDescendentParser {
     private Grammar grammar;
     private List sequence;
@@ -41,7 +34,7 @@ public class RecursiveDescendentParser {
 
         writeOutputFile("Expand",false);
         String nonTerminal = inputStack.pop();
-        workingStack.push(new Pair<>(nonTerminal,0)); ///TODO see why Paul pushes a tuple here
+        workingStack.push(new Pair<>(nonTerminal,0));
         String newProduction = ""; //TODO getProductionsForNonTerminal(nonTerminal);
         //TODO inputStack.push() /// self.input_stack = new_production + self.input_stack
     }
@@ -92,7 +85,7 @@ public class RecursiveDescendentParser {
             deleteLastProductionFromStack(lenght);
 
             //put new production in input 
-            List<String> newProduction = grammar.getProductionsForNonTerminal(last.getFirst())[last.getSecond()];
+//            List<String> newProduction = grammar.getProductionsForNonTerminal(last.getFirst())[last.getSecond()];
 
         }
 
