@@ -99,6 +99,7 @@ public class Grammar {
             if (!nonterminals.contains(production.getStartingNonterminal())) {
                 throw new RuntimeException(String.format("Starting nonterminal %s from production %s is not one of the nonterminals.", production.getStartingNonterminal(), production));
             }
+
             production.getRules().forEach(rule -> rule.forEach(symbol -> {
                 if (!(terminals.contains(symbol) || nonterminals.contains(symbol))) {
                     throw new RuntimeException(String.format("Symbol %s from production %s is neither terminal, nor nonterminal.", symbol, production));
